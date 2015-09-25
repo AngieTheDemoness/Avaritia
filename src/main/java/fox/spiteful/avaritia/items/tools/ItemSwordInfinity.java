@@ -20,6 +20,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 import org.apache.logging.log4j.Level;
@@ -28,6 +29,7 @@ import java.lang.reflect.Field;
 
 public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
 
+    public static final String[] types = new String[]{"normal", "meow"};
     private static final ToolMaterial opSword = EnumHelper.addToolMaterial("INFINITY_SWORD", 32, 9999, 9999F, -3.0F, 200);
     private IIcon cosmicMask;
     private IIcon pommel;
@@ -45,6 +47,7 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
 
     public ItemSwordInfinity(){
         super(opSword);
+        this.setHasSubtypes(true);
         setUnlocalizedName("infinity_sword");
         setTextureName("avaritia:infinity_sword");
         setCreativeTab(Avaritia.tab);
@@ -74,6 +77,12 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
         victim.setHealth(0);
         victim.onDeath(new EntityDamageSource("infinity", player));
         return true;
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+      int i = MathHelper.clamp_int(stack.getItemDamage(), 0, types.length);
+      return "item.infinity_sword_" + types[i];
     }
 
     @Override
